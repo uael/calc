@@ -96,24 +96,24 @@ class ViewController: UIViewController {
         case "-":
             isWriting = false
             op = Operator.SUB
-        case "*":
+        case "×":
             isWriting = false
             op = Operator.MUL
-        case "/":
+        case "÷":
             isWriting = false
             op = Operator.DIV
-        case "n²":
-            applyUnary({$0*$0})
-        case "sqrt":
-            applyUnary({sqrt($0)})
+        case "×²":
+            applyUnary({$0 * $0})
+        case "√":
+            applyUnary(sqrt)
         case "cos":
-            applyUnary({cos($0)})
+            applyUnary(cos)
         case "sin":
-            applyUnary({sin($0)})
+            applyUnary(sin)
         case "tan":
-            applyUnary({tan($0)})
+            applyUnary(tan)
         case "log":
-            applyUnary({log($0)})
+            applyUnary(log)
         default:
             break;
         }
