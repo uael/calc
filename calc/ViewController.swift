@@ -2,10 +2,22 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    enum Operator {
+        case NONE
+        case ADD
+        case SUB
+        case MUL
+        case DIV
+    }
+    
     @IBOutlet
     weak var result: UILabel!
+    var op: Operator = Operator.NONE
+    var operand = 0.0
     var isWriting = false
-    var numbers = Array<Double>()
+    var hasComma = false
+    var stack : Array<Double> = []
+    
     var value: Double {
         get {
             return Double(result.text!)!
@@ -13,9 +25,42 @@ class ViewController: UIViewController {
         set {
             result.text = "\(newValue)"
             isWriting = false
+            hasComma = false
         }
     }
-    @IBOutlet weak var cells: UICollectionView!
+    
+    func applyBinary(_ operation: (Double, Double) -> Double) {
+        stack.append(operand)
+        isWriting = false
+        value = operation(operand, value)
+        operand = value
+    }
+    
+    func applyUnary(_ operation: (Double) -> Double) {
+        stack.append(operand)
+        isWriting = false
+        if op != Operator.NONE {
+            apply()
+        }
+        value = operation(operand)
+        operand = value
+    }
+    
+    func apply() {
+        switch op {
+        case Operator.ADD:
+            applyBinary({$0 + $1});
+        case Operator.SUB:
+            applyBinary({$0 - $1});
+        case Operator.MUL:
+            applyBinary({$0 * $1});
+        case Operator.DIV:
+            applyBinary({$0 / $1});
+        default:
+            break;
+        }
+        op = Operator.NONE
+    }
     
     @IBAction
     func nClick(_ sender: UIButton) {
@@ -29,32 +74,60 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func comma(_ sender: UIButton) {
+        if !hasComma {
+            result.text = result.text! + "."
+            hasComma = true
+        }
+    }
+    
     @IBAction
     func enter(_ sender: UIButton) {
-        numbers.append(value)
-        isWriting = false
+        apply()
     }
     
     @IBAction
     func operate(_ sender: UIButton) {
-        if numbers.count >= 2 {
-            switch sender.currentTitle! {
-            case "+":
-                value = numbers.popLast()! + numbers.popLast()!
-                enter(sender)
-            case "-":
-                value = numbers.popLast()! - numbers.popLast()!
-                enter(sender)
-            case "*":
-                value = numbers.popLast()! * numbers.popLast()!
-                enter(sender)
-            case "/":
-                value = numbers.popLast()! / numbers.popLast()!
-                enter(sender)
-            default:
-                break;
-            }
+        operand = value
+        switch sender.currentTitle! {
+        case "+":
+            isWriting = false
+            op = Operator.ADD
+        case "-":
+            isWriting = false
+            op = Operator.SUB
+        case "*":
+            isWriting = false
+            op = Operator.MUL
+        case "/":
+            isWriting = false
+            op = Operator.DIV
+        case "n²":
+            applyUnary({$0*$0})
+        case "sqrt":
+            applyUnary({sqrt($0)})
+        case "cos":
+            applyUnary({cos($0)})
+        case "sin":
+            applyUnary({sin($0)})
+        case "tan":
+            applyUnary({tan($0)})
+        case "log":
+            applyUnary({log($0)})
+        default:
+            break;
         }
+    }
+    
+    @IBAction func back(_ sender: UIButton) {
+        value = stack.count > 0 ? stack.popLast()! : 0.0
+    }
+    
+    @IBAction func ac(_ sender: UIButton) {
+        value = 0.0
+        op = Operator.NONE
+        operand = 0.0
+        isWriting = false
     }
 }
 
