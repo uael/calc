@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F01539B51E8E76A200842585 /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01539B41E8E76A200842585 /* Brain.swift */; };
+		F01539B71E8E7F4000842585 /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01539B61E8E7F4000842585 /* StringExt.swift */; };
 		F03896DD1E6567EB00B00478 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03896DC1E6567EB00B00478 /* AppDelegate.swift */; };
 		F03896DF1E6567EB00B00478 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03896DE1E6567EB00B00478 /* ViewController.swift */; };
 		F03896E21E6567EB00B00478 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F03896E01E6567EB00B00478 /* Main.storyboard */; };
@@ -34,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F01539B41E8E76A200842585 /* Brain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
+		F01539B61E8E7F4000842585 /* StringExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
 		F03896D91E6567EB00B00478 /* calc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = calc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F03896DC1E6567EB00B00478 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F03896DE1E6567EB00B00478 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +107,8 @@
 				F03896E31E6567EB00B00478 /* Assets.xcassets */,
 				F03896E51E6567EB00B00478 /* LaunchScreen.storyboard */,
 				F03896E81E6567EB00B00478 /* Info.plist */,
+				F01539B41E8E76A200842585 /* Brain.swift */,
+				F01539B61E8E7F4000842585 /* StringExt.swift */,
 			);
 			path = calc;
 			sourceTree = "<group>";
@@ -260,6 +266,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F03896DF1E6567EB00B00478 /* ViewController.swift in Sources */,
+				F01539B51E8E76A200842585 /* Brain.swift in Sources */,
+				F01539B71E8E7F4000842585 /* StringExt.swift in Sources */,
 				F03896DD1E6567EB00B00478 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -505,6 +513,7 @@
 				F03897031E6567EB00B00478 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F03897041E6567EB00B00478 /* Build configuration list for PBXNativeTarget "calcTests" */ = {
 			isa = XCConfigurationList;
@@ -513,6 +522,7 @@
 				F03897061E6567EB00B00478 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F03897071E6567EB00B00478 /* Build configuration list for PBXNativeTarget "calcUITests" */ = {
 			isa = XCConfigurationList;
@@ -521,6 +531,7 @@
 				F03897091E6567EB00B00478 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

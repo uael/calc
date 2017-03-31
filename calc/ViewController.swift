@@ -2,132 +2,63 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    enum Operator {
-        case NONE
-        case ADD
-        case SUB
-        case MUL
-        case DIV
-    }
-    
-    @IBOutlet
-    weak var result: UILabel!
-    var op: Operator = Operator.NONE
-    var operand = 0.0
-    var isWriting = false
-    var hasComma = false
-    var stack : Array<Double> = []
-    
+    @IBOutlet weak var result: UILabel!
+    @IBOutlet weak var text: UILabel!
+    var brain = Brain()
     var value: Double {
-        get {
-            return Double(result.text!)!
-        }
-        set {
-            result.text = "\(newValue)"
-            isWriting = false
-            hasComma = false
-        }
-    }
-    
-    func applyBinary(_ operation: (Double, Double) -> Double) {
-        stack.append(operand)
-        isWriting = false
-        value = operation(operand, value)
-        operand = value
-    }
-    
-    func applyUnary(_ operation: (Double) -> Double) {
-        stack.append(operand)
-        isWriting = false
-        if op != Operator.NONE {
-            apply()
-        }
-        value = operation(operand)
-        operand = value
-    }
-    
-    func apply() {
-        switch op {
-        case Operator.ADD:
-            applyBinary({$0 + $1});
-        case Operator.SUB:
-            applyBinary({$0 - $1});
-        case Operator.MUL:
-            applyBinary({$0 * $1});
-        case Operator.DIV:
-            applyBinary({$0 / $1});
-        default:
-            break;
-        }
-        op = Operator.NONE
-    }
-    
-    @IBAction
-    func nClick(_ sender: UIButton) {
-        if let chiffre = sender.currentTitle {
-            if isWriting {
-                result.text = result.text! + chiffre
-            } else {
-                result.text = chiffre
-                isWriting = true
-            }
-        }
-    }
-    
-    @IBAction func comma(_ sender: UIButton) {
-        if !hasComma {
-            result.text = result.text! + "."
-            hasComma = true
-        }
-    }
-    
-    @IBAction
-    func enter(_ sender: UIButton) {
-        apply()
-    }
-    
-    @IBAction
-    func operate(_ sender: UIButton) {
-        operand = value
-        switch sender.currentTitle! {
-        case "+":
-            isWriting = false
-            op = Operator.ADD
-        case "-":
-            isWriting = false
-            op = Operator.SUB
-        case "×":
-            isWriting = false
-            op = Operator.MUL
-        case "÷":
-            isWriting = false
-            op = Operator.DIV
-        case "×²":
-            applyUnary({$0 * $0})
-        case "√":
-            applyUnary(sqrt)
-        case "cos":
-            applyUnary(cos)
-        case "sin":
-            applyUnary(sin)
-        case "tan":
-            applyUnary(tan)
-        case "log":
-            applyUnary(log)
-        default:
-            break;
-        }
+        get { return Double(result.text!)! }
+        set { result.text = "\(newValue)" }
     }
     
     @IBAction func back(_ sender: UIButton) {
-        value = stack.count > 0 ? stack.popLast()! : 0.0
+
     }
     
     @IBAction func ac(_ sender: UIButton) {
+        text.text = ""
         value = 0.0
-        op = Operator.NONE
-        operand = 0.0
-        isWriting = false
+    }
+    
+    func calc() {
+        do {
+            value = try brain.eval(text.text!)
+        } catch Brain.ParseError.missingRightPar {
+            result.text = "ERR: ')' MISSING"
+        } catch {
+            result.text = "ERR"
+        }
+    }
+    
+    @IBAction func append(_ sender: UIButton) {
+        switch sender.currentTitle! {
+        case ".":
+            if text.text?.characters.last == "." {
+                return
+            }
+            text.text?.append(sender.currentTitle!)
+            do { try brain.eval(text.text!) }
+            catch Brain.ParseError.twoOrMoreComma {
+                text.text?.remove(
+                    at: (text.text?.index(before: (text.text?.endIndex)!))!
+                )
+            } catch {}
+        case "(":
+            text.text?.append(sender.currentTitle!)
+            sender.setTitle(")", for: UIControlState.normal)
+        case ")":
+            text.text?.append(sender.currentTitle!)
+            sender.setTitle("(", for: UIControlState.normal)
+            calc()
+        case "√":
+            text.text?.append(sender.currentTitle!)
+        default:
+            text.text?.append(" " + sender.currentTitle! + " ")
+        }
+    }
+    
+    @IBAction func appendAndCalc(_ sender: UIButton) {
+        text.text?.append(sender.currentTitle!)
+        calc()
     }
 }
 
