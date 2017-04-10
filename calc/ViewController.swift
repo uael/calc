@@ -12,6 +12,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction func back(_ sender: UIButton) {
+        if text.text!.length == 0 {
+            return
+        }
         switch text.text![text.text!.length-1] {
         case ")":
             par.setTitle(")", for: UIControlState.normal)
