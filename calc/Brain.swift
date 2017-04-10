@@ -29,13 +29,11 @@ extension String {
         let end = index(start, offsetBy: range.upperBound - range.lowerBound)
         return self[Range(start ..< end)]
     }
-    
 }
 
 class Brain {
     
     enum ParseError : Error {
-        case missingRightPar
         case unknownFunc
         case twoOrMoreComma
     }
@@ -65,10 +63,9 @@ class Brain {
         case "(":
             i = i + 1
             let r1 = try expression(word, &i)
-            if word[i] != ")" {
-                throw ParseError.missingRightPar
+            if word[i] == ")" {
+                i = i + 1
             }
-            i = i + 1
             return r1
         case "√":
             i = i + 1
@@ -91,7 +88,7 @@ class Brain {
                 throw ParseError.unknownFunc
             }
         default:
-            var num = ""
+            var num = "0"
             var hasComma = false
             while (word[i] >= "0" && word[i] <= "9") || word[i] == "." {
                 if word[i] == "." {
@@ -165,5 +162,19 @@ class Brain {
             r = Expr.binary(r, try expression(word, &i), {$0 * $1})
         }
         return r.eval()
+    }
+    
+    func back(_ word : inout String) {
+        switch word[word.length-1] {
+        case " ":
+            let c = word[word.length-2]
+            if c == "s" || c == "n" || c == "g" {
+                word = word.substring(to: word.length-4)
+            } else {
+                word = word.substring(to: word.length-3)
+            }
+        default:
+            word = word.substring(to: word.length-1)
+        }
     }
 }

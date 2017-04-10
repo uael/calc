@@ -4,6 +4,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var result: UILabel!
     @IBOutlet weak var text: UILabel!
+    @IBOutlet weak var par: UIButton!
     var brain = Brain()
     var value: Double {
         get { return Double(result.text!)! }
@@ -11,7 +12,16 @@ class ViewController: UIViewController {
     }
     
     @IBAction func back(_ sender: UIButton) {
-
+        switch text.text![text.text!.length-1] {
+        case ")":
+            par.setTitle(")", for: UIControlState.normal)
+        case "(":
+            par.setTitle("(", for: UIControlState.normal)
+        default:
+            break
+        }
+        brain.back(&text.text!)
+        calc()
     }
     
     @IBAction func ac(_ sender: UIButton) {
@@ -22,8 +32,6 @@ class ViewController: UIViewController {
     func calc() {
         do {
             value = try brain.eval(text.text!)
-        } catch Brain.ParseError.missingRightPar {
-            result.text = "ERR: ')' MISSING"
         } catch {
             result.text = "ERR"
         }
@@ -60,6 +68,8 @@ class ViewController: UIViewController {
         text.text?.append(sender.currentTitle!)
         calc()
     }
+    
+    
 }
 
 
